@@ -1,0 +1,71 @@
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+  #include <avr/power.h>
+#endif
+
+// Which pin on the Arduino is connected to the NeoPixels
+#define PIN            7
+
+// How many NeoPixels are attached to the Arduino
+#define NUMPIXELS      5
+
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+
+
+void setup() {
+
+  pinMode(7,OUTPUT);//the NeoPixel
+  pinMode(2,INPUT);//button 1
+  pinMode(4,INPUT);//button 2
+  pixels.begin(); // This initializes the NeoPixel library.
+}
+
+void loop() {
+  int buttonState= digitalRead(2);
+
+  if(buttonState == HIGH){
+    //turn LED on
+//    digitalWrite(7,HIGH);
+for(int i = 0; i<5; i++){
+       pixels.setPixelColor(i, pixels.Color(0,128,128));
+        delay(150);
+        pixels.show();
+      }
+    
+  }
+ 
+
+   if(buttonState==LOW){
+    //turn LED off
+    for(int i=0; i<5; i++){
+      pixels.setPixelColor(i,pixels.Color(0,0,0));
+      delay(150);
+      pixels.show();
+    }
+   }
+
+  buttonState= digitalRead(4);
+  if(buttonState == HIGH){
+    //turn LED on
+//    digitalWrite(7,HIGH);
+      for(int i = 0; i<5; i++){
+        pixels.setPixelColor(i, pixels.Color(255,20,147));
+        delay(150);
+        pixels.show();
+      }
+    
+  }
+ 
+ if(buttonState==LOW){
+    //turn LED off
+    for(int i=0; i<5; i++){
+      pixels.setPixelColor(i,pixels.Color(0,0,0));
+      delay(150);
+      pixels.show();
+    }
+ }
+   }
+    
+  
+
+    
