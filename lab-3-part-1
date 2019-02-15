@@ -1,38 +1,31 @@
+int pot = A0;
+int photocell = A1;
+int LEDone = 3;
+int LEDtwo = 5;
+int potVal;
+
+
 void setup() {
   // put your setup code here, to run once:
-  pinMode(9,OUTPUT);
-  pinMode(10,OUTPUT);
-
-  //set up for serial monitor
   Serial.begin(9600);
-
+  pinMode(LEDone, OUTPUT);
+  pinMode(LEDtwo, OUTPUT);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  int photocell=analogRead(A1);
-  //int pot=analogRead(A0);
-  int pot=map(analogRead(A0),0,1023,0,3);
-int potval = analogRead(A0);
-  
-  if(pot==0){
-    digitalWrite(9,LOW);
-    digitalWrite(10,LOW);
-  }
-  else if (pot==1){
-    digitalWrite(9,HIGH);
-    digitalWrite(10,LOW);
-  }
-  else{
-    digitalWrite(9,HIGH);
-    digitalWrite(10,HIGH);
-  }
+  int potVal = analogRead(pot);
+  int photocellVal = analogRead(photocell);
 
-  Serial.print("photocell: ");
-  Serial.print(photocell);
-  Serial.print(", ");
-  Serial.print("pot: ");
-  Serial.print(pot);
-  Serial.print(" potval: ");
-  Serial.println(potval);
+  int mapVal1 = map(potVal, 0, 1023, 0, 255);
+  int mapVal2 = map(photocellVal, 100,800, 0, 255);
+
+  analogWrite(LEDone, mapVal1);
+  analogWrite(LEDtwo, mapVal2);
+
+//  Serial.print("LED 1: ");
+//  Serial.print(mapVal1);
+//  Serial.println(", LED 2: ");
+//  Serial.print(mapVal2);
+  Serial.println(analogRead(A1));
 }
