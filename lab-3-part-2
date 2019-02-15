@@ -1,0 +1,18 @@
+void setup() {
+  // put your setup code here, to run once:
+  
+  //intialize serial monitor
+  Serial.begin(9600);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  //int photocell =A0;
+  int speaker=8;
+
+  int photocell = analogRead(A0);
+  float frequency = map(photocell, 0, 1023, 200, 600);
+  Serial.println(photocell);
+  tone(speaker,frequency,10);
+ 
+}
