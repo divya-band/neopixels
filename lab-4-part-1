@@ -1,0 +1,28 @@
+#include <Servo.h>
+
+// creates an instance of the servo object to control a servo
+Servo myServo;
+
+// declare the control pin for servo motor, call it servoPin
+int servoPin=A0;
+
+int val;    // variable to read the value from the analog pin
+
+void setup() {
+  // initialize serial communications
+  Serial.begin(9600);
+  // attach the servo object to the servoPin
+  myServo.attach(3);
+}
+
+void loop() {
+  // read the analog input
+  val = analogRead(servoPin);
+  // print it to the serial monitor
+  Serial.println(val);
+  // make a new int called angle - use the map() function to map the range of your sensor to the range of the servo (which is 0 to 179)
+  val=map(val,0,1023,0,179);
+  // move the servo using the angle from the sensor with the servo write() function
+  myServo.write(val);
+  //delay(15);
+}
