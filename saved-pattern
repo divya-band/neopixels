@@ -1,0 +1,155 @@
+#include <Adafruit_NeoPixel.h>
+
+    int buttonPin = 2;    // momentary push button on pin 0
+    int oldButtonVal = 0;
+    
+    #define PIN 5    //number of pixels in strip
+                          
+    Adafruit_NeoPixel strip = Adafruit_NeoPixel(5, 8, NEO_GRB + NEO_KHZ800);
+    
+    int nPatterns = 10;
+    int lightPattern = 1;
+
+// the setup routine runs once when you press reset:
+    void setup() {
+    strip.begin();
+    strip.show();                // initialize all pixels to 'off'    
+// initialize the BUTTON pin as an input
+    pinMode(buttonPin, INPUT);
+    digitalWrite(buttonPin, HIGH);  // button pin is HIGH, so it drops to 0 if pressed
+}
+       
+
+// the loop routine runs over and over again forever;
+void loop() {
+  // read that state of the pushbutton value;
+  int buttonVal = digitalRead(buttonPin);
+  if (buttonVal == LOW && oldButtonVal == HIGH) {// button has just been pressed
+    lightPattern = lightPattern + 1;
+  }
+  if (lightPattern > nPatterns) lightPattern = 1;
+  oldButtonVal = buttonVal;
+  
+  switch(lightPattern) {
+    case 1:
+      pattern1();
+      break;
+    case 2:
+      pattern2();
+      break;
+    case 3:
+      pattern3();
+      break;
+    case 4:
+      pattern4();
+      break;
+    case 5:
+      pattern5();
+      break;
+    case 6:
+      pattern6();
+      break;
+    case 7:
+      pattern7();
+      break;
+    case 8:
+      pattern8();
+      break;
+    case 9:
+      pattern9();
+      break;
+    case 10:
+      pattern10();
+      break;
+  }
+}
+//second page
+
+
+// Pattern 1 - Black 
+    void pattern1() {
+
+for (int i = 0; i < 5; i++){
+  strip.setPixelColor(i, 0,0,0);//black
+} 
+    strip.show();
+    }
+    
+// Pattern 2 - White 
+    void pattern2() {
+      for (int i = 0; i < 5; i++){
+  strip.setPixelColor(i, 255,255,255);//white
+} 
+    strip.show();
+    }
+      
+    
+// Pattern 3 - Red 
+    void pattern3() {
+      for (int i = 0; i < 5; i++){
+  strip.setPixelColor(i, 255,0,0);//red
+} 
+    strip.show();
+    }
+    
+// Pattern 4 - Orange
+    void pattern4() {
+      for (int i = 0; i < 5; i++){
+  strip.setPixelColor(i, 255,128,0);//orange
+} 
+    strip.show();
+    }
+     
+
+// Pattern 5 - Yellow 
+    void pattern5() {
+      for (int i = 0; i < 5; i++){
+  strip.setPixelColor(i, 255,255,0);//yellow
+} 
+    strip.show();
+    }
+     
+    
+// Pattern 6 - Green
+    void pattern6() {
+      for (int i = 0; i < 5; i++){
+  strip.setPixelColor(i, 0,255,0);//green
+} 
+    strip.show();
+    }
+       
+
+// Pattern 7 - Blue 
+    void pattern7() {
+      for (int i = 0; i < 5; i++){
+  strip.setPixelColor(i, 0,0,255);//blue
+} 
+    strip.show();
+    }
+      
+    
+// Pattern 8 - Purple
+    void pattern8() {
+      for (int i = 0; i < 5; i++){
+  strip.setPixelColor(i, 127,0,255);//purple
+} 
+    strip.show();
+    }
+
+// Pattern 9 - Rainbow 
+    void pattern9() {
+        strip.setPixelColor(0, strip.Color(255, 0, 255)); // Red
+        strip.setPixelColor(1, strip.Color(255, 255, 0)); // Yellow
+        strip.setPixelColor(2, strip.Color(0, 255, 0)); // Green
+        strip.setPixelColor(3, strip.Color(0, 0, 255)); // Blue
+        strip.setPixelColor(4, strip.Color(127, 0, 255)); // Purple
+    strip.show();
+    }
+
+// Pattern 10 - Black 
+    void pattern10() {
+      for (int i = 0; i < 5; i++){
+  strip.setPixelColor(i, 0,0,0);//black
+} 
+    strip.show();
+    }
