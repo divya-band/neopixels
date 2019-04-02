@@ -4,16 +4,19 @@ int incomingByte;     // a variable to read incoming serial data into
 void setup() {
   Serial.begin(9600);             // initialize serial communication
   pinMode(ledPin, OUTPUT);        // initialize the LED pin as an output
+  digitalWrite(ledPin, LOW); 
 }
 
 void loop() {
-  if (Serial.available() > 0) {   // see if there's incoming serial data
+  if (Serial.available()) {   // see if there's incoming serial data
     incomingByte = Serial.read(); // read it
-    if (incomingByte == 'h') {    // if it's an h (ASCII 72),
+    if (incomingByte == 10) {    // if it's a capital h (ASCII 72),
       digitalWrite(ledPin, HIGH); // turn on the LED
+      
     }
-    if (incomingByte == 'l') {    // if it's a l (ASCII 76) 
+    if (incomingByte == 11) {    // if it's an l (ASCII 76)
       digitalWrite(ledPin, LOW);  // turn off the LED
+      
     }
   }
 }
