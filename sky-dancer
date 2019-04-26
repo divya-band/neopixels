@@ -1,0 +1,116 @@
+#include <Wire.h>
+#include <SparkFun_APDS9960.h>
+
+// Pins
+#define APDS9960_INT    2 // Needs to be an interrupt pin
+
+// Constants
+const int switchPin = 7;    // switch input
+const int motor1Pin = 3;    // H-bridge leg 1 (pin 2, 1A)
+const int motor2Pin = 4;    // H-bridge leg 2 (pin 7, 2A)
+const int enablePin = 9;    // H-bridge enable pin
+
+// Global Variables
+SparkFun_APDS9960 apds = SparkFun_APDS9960();
+int isr_flag = 0;
+
+void setup() {
+
+  // set the switch as an input:
+  pinMode(switchPin, INPUT);
+
+  // set all the other pins you're using as outputs:
+  pinMode(motor1Pin, OUTPUT);
+  pinMode(motor2Pin, OUTPUT);
+  pinMode(enablePin, OUTPUT);
+
+  // set enablePin high so that motor can turn on:
+  digitalWrite(enablePin, HIGH);
+  analogWrite(enablePin, 90);
+  Serial.begin(9600);
+
+  // Set interrupt pin as input
+  pinMode(APDS9960_INT, INPUT);
+
+  // Initialize Serial port
+  //Serial.begin(9600);
+  Serial.println();
+  Serial.println(F("--------------------------------"));
+  Serial.println(F("SparkFun APDS-9960 - GestureTest"));
+  Serial.println(F("--------------------------------"));
+
+  // Initialize interrupt service routine
+  attachInterrupt(0, interruptRoutine, FALLING);
+
+  // Initialize APDS-9960 (configure I2C and initial values)
+  if ( apds.init() ) {
+    Serial.println(F("APDS-9960 initialization complete"));
+  } else {
+    Serial.println(F("Something went wrong during APDS-9960 init!"));
+  }
+
+  // Start running the APDS-9960 gesture sensor engine
+  if ( apds.enableGestureSensor(true) ) {
+    Serial.println(F("Gesture sensor is now running"));
+  } else {
+    Serial.println(F("Something went wrong during gesture sensor init!"));
+  }
+}
+
+void loop() {
+  if ( isr_flag == 1 ) {
+    detachInterrupt(0);
+    handleGesture();
+    isr_flag = 0;
+    attachInterrupt(0, interruptRoutine, FALLING);
+  }
+  //Serial.println(digitalRead(switchPin));
+  int  switchVal = digitalRead(switchPin);
+  switchVal = HIGH;
+
+  if (switchVal == HIGH) {
+    digitalWrite(motor1Pin, LOW);
+    digitalWrite(motor2Pin, HIGH);
+  }
+  else {
+    digitalWrite(motor1Pin, HIGH);
+    digitalWrite(motor2Pin, LOW);
+  }
+}
+
+void interruptRoutine() {
+  isr_flag = 1;
+}
+
+void handleGesture() {
+  if ( apds.isGestureAvailable() ) {
+    switch ( apds.readGesture() ) {
+      case DIR_UP:
+        Serial.println("UP");
+        analogWrite(enablePin, 750);
+        break;
+      case DIR_DOWN:
+        Serial.println("DOWN");
+        analogWrite(enablePin, 1000);
+        break;
+      case DIR_LEFT:
+        Serial.println("LEFT");
+        analogWrite(enablePin, 600);
+        break;
+      case DIR_RIGHT:
+        Serial.println("RIGHT");
+        analogWrite(enablePin, 1275);
+        break;
+      case DIR_NEAR:
+        Serial.println("NEAR");
+        analogWrite(enablePin, 800);
+        break;
+      case DIR_FAR:
+        Serial.println("FAR");
+        analogWrite(enablePin, 950);
+        break;
+      default:
+        Serial.println("NONE");
+    }
+  }
+}
